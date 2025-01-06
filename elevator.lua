@@ -7,12 +7,14 @@ CreateThread(function()
         local playerCoords = GetEntityCoords(playerPed)
         local sleep = 1000 
 
-        for _, elevator in ipairs(Config.Elevators) do
-            for _, floor in ipairs(elevator.floors) do
+        for i=1, #(Config.Elevators) do
+            local elevator = Config.Elevators[i]
+            for i=1, #(elevator.floors) do
+                local floor = elevator.floors[i]
                 local distance = #(playerCoords - floor.coords)
 
                 if distance < 10.0 then
-                    sleep = 0 
+                    sleep = 0
                     DrawMarker(
                         elevatorMarker,
                         floor.coords.x, floor.coords.y, floor.coords.z - 1.0,
@@ -42,7 +44,8 @@ end)
 function OpenElevatorMenu(playerPed, floors)
     local elements = {}
 
-    for _, floor in ipairs(floors) do
+    for=1,#floors do
+        local floor = floors[i]
         table.insert(elements, {label = floor.label, value = floor.coords})
     end
     local selectedFloor = ShowSimpleMenu(elements)
@@ -54,10 +57,11 @@ end
 
 function ShowSimpleMenu(elements)
     local selected = nil
-    for i, element in ipairs(elements) do
+    for i=1, #(elements) do
+        local element = elements[i]
         print(string.format("%d: %s", i, element.label))
     end
-    print("Enter the floor number:")
+
     local input = tonumber(GetUserInput())
     if input and elements[input] then
         selected = elements[input].value
@@ -74,14 +78,14 @@ function ShowHelpNotification(text)
     BeginTextCommandDisplayHelp("STRING")
     AddTextComponentSubstringPlayerName(text)
     EndTextCommandDisplayHelp(0, false, true, -1)
-    if GetCurrentResourceName() ~= "LNWK-NPCs" then
+    if GetCurrentResourceName() ~= "LNWK-Elevators" then
         print("Please dont edit the resource name :(")
     end
 end
 
 AddEventHandler('onResourceStart', function (resourceName)
     if resourceName == GetCurrentResourceName() then
-        ExecuteCommand('sets tags "LNWK Elevators"')
+        SetConvarServerInfo("tags", "LNWK Elevators")
     end
 end)
 
