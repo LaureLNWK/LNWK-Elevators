@@ -83,12 +83,6 @@ function ShowHelpNotification(text)
     end
 end
 
-AddEventHandler('onResourceStart', function (resourceName)
-    if resourceName == GetCurrentResourceName() then
-        SetConvarServerInfo("tags", "LNWK Elevators")
-    end
-end)
-
 function GetUserInput()
     AddTextEntry('FMMC_KEY_TIP1', "Enter a number:")
     DisplayOnscreenKeyboard(1, "FMMC_KEY_TIP1", "", "", "", "", "", 10)
